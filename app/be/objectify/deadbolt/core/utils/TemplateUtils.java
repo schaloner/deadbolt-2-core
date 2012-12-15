@@ -15,6 +15,10 @@
  */
 package be.objectify.deadbolt.core.utils;
 
+import be.objectify.deadbolt.core.models.Permission;
+import be.objectify.deadbolt.core.models.Role;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +30,7 @@ import java.util.List;
 public class TemplateUtils
 {
     /**
-     * Converts the arguments into a String array.  Convenience method for templates.
+     * Converts the arguments into a String array.
      *
      * @param args the arguments
      * @return the arguments as an array
@@ -37,7 +41,39 @@ public class TemplateUtils
     }
 
     /**
-     * Converts the argument array into a List of String arrays.  Convenience method for templates.
+     * Converts the roles into a String array.
+     *
+     * @param roles the roles
+     * @return the roles as an array of strings
+     */
+    public static String[] roles(Role... roles)
+    {
+        List<String> names = new ArrayList<String>(roles.length);
+        for (Role role : roles)
+        {
+            names.add(role.getName());
+        }
+        return names.toArray(new String[names.size()]);
+    }
+
+    /**
+     * Converts the permissions into a String array.
+     *
+     * @param permissions the permissions
+     * @return the permissions as an array of strings
+     */
+    public static String[] roles(Permission... permissions)
+    {
+        List<String> values = new ArrayList<String>(permissions.length);
+        for (Permission permission : permissions)
+        {
+            values.add(permission.getValue());
+        }
+        return values.toArray(new String[values.size()]);
+    }
+
+    /**
+     * Converts the argument array into a List of String arrays.
      *
      * @param args the arguments
      * @return a non-null list containing the arguments

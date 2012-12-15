@@ -18,13 +18,23 @@ package be.objectify.deadbolt.core.models;
 import java.util.List;
 
 /**
- * A Subject represents something, typically a user, that will try to access the application.
+ * A Subject represents an authorisable entity, typically a user, that will try to access the application.
  *
  * @author Steve Chaloner (steve@objectify.be)
  */
 public interface Subject
 {
+    /**
+     * Get all {@link Role}s held by this subject.  Ordering is not important.
+     *
+     * @return a non-null list of roles
+     */
     List<? extends Role> getRoles();
 
+    /**
+     * Get all {@link Permission}s held by this subject.  Ordering is not important.
+     *
+     * @return a non-null list of permissions
+     */
     List<? extends Permission> getPermissions();
 }

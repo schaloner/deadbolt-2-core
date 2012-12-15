@@ -68,7 +68,7 @@ public class DeadboltAnalyzer
             {
                 for (Role role : roles)
                 {
-                    roleNames.add(role.getRoleName());
+                    roleNames.add(role.getName());
                 }
             }
         }
@@ -90,10 +90,12 @@ public class DeadboltAnalyzer
     }
 
     /**
+     * Check if the {@link Subject} has all the roles given in the roleNames array.  Note that while a Subject must
+     * have all the roles, it may also have other roles.
      *
-     * @param subject
-     * @param roleNames
-     * @return
+     * @param subject the subject
+     * @param roleNames the names of the required roles
+     * @return true iff the subject has all the roles
      */
     public static boolean hasAllRoles(Subject subject,
                                       String[] roleNames)
