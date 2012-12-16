@@ -37,4 +37,13 @@ public interface Subject
      * @return a non-null list of permissions
      */
     List<? extends Permission> getPermissions();
+
+    /**
+     * Gets a unique identifier for the subject, such as a user name.  This is never used by Deadbolt itself,
+     * and is present to provide an easy way of getting a useful piece of user information in, for example,
+     * dynamic checks without the need to cast the Subject.
+     *
+     * @return an identifier, such as a user name or UUID.  May be null.
+     */
+    String getIdentifier();
 }
