@@ -5,3 +5,4 @@ target
 .settings
 project/target
 project/project
+atlassian-ide-plugin.xml
