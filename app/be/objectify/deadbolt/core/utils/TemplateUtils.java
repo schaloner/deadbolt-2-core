@@ -37,7 +37,7 @@ public class TemplateUtils
      */
     public static String[] as(String... args)
     {
-        return args;
+        return args == null ? new String[0] : args;
     }
 
     /**

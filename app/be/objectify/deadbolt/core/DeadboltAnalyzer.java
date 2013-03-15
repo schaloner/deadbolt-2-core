@@ -41,13 +41,9 @@ public class DeadboltAnalyzer
     public static boolean checkRole(Subject subject,
                                     String[] roleNames)
     {
-        boolean roleOk = true;
-        if (!hasAllRoles(subject,
-                         roleNames))
-        {
-            roleOk = false;
-        }
-        return roleOk;
+        // this is legacy code, and can be refactored out at some point
+        return hasAllRoles(subject,
+                           roleNames);
     }
 
 
@@ -68,7 +64,10 @@ public class DeadboltAnalyzer
             {
                 for (Role role : roles)
                 {
-                    roleNames.add(role.getName());
+                    if (role != null)
+                    {
+                        roleNames.add(role.getName());
+                    }
                 }
             }
         }
@@ -100,36 +99,26 @@ public class DeadboltAnalyzer
     public static boolean hasAllRoles(Subject subject,
                                       String[] roleNames)
     {
-        boolean hasRole = false;
-        if (subject != null)
+        List<String> heldRoles = getRoleNames(subject);
+
+        boolean roleCheckResult = roleNames != null && roleNames.length > 0;
+        for (int i = 0; roleCheckResult && i < roleNames.length; i++)
         {
-            List<? extends Role> roles = subject.getRoles();
-
-            if (roles != null)
+            boolean invert = false;
+            String roleName = roleNames[i];
+            if (roleName.startsWith("!"))
             {
-                List<String> heldRoles = getRoleNames(subject);
+                invert = true;
+                roleName = roleName.substring(1);
+            }
+            roleCheckResult = heldRoles.contains(roleName);
 
-                boolean roleCheckResult = true;
-                for (int i = 0; roleCheckResult && i < roleNames.length; i++)
-                {
-                    boolean invert = false;
-                    String roleName = roleNames[i];
-                    if (roleName.startsWith("!"))
-                    {
-                        invert = true;
-                        roleName = roleName.substring(1);
-                    }
-                    roleCheckResult = heldRoles.contains(roleName);
-
-                    if (invert)
-                    {
-                        roleCheckResult = !roleCheckResult;
-                    }
-                }
-                hasRole = roleCheckResult;
+            if (invert)
+            {
+                roleCheckResult = !roleCheckResult;
             }
         }
-        return hasRole;
+        return roleCheckResult;
     }
 
     /**
@@ -142,7 +131,7 @@ public class DeadboltAnalyzer
                                             Pattern pattern)
     {
         boolean roleOk = false;
-        if (subject != null)
+        if (subject != null && pattern != null)
         {
             List<? extends Permission> permissions = subject.getPermissions();
             if (permissions != null)
@@ -168,7 +157,7 @@ public class DeadboltAnalyzer
                                                String patternValue)
     {
         boolean roleOk = false;
-        if (subject != null)
+        if (subject != null && patternValue != null)
         {
             List<? extends Permission> permissions = subject.getPermissions();
             if (permissions != null)
