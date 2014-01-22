@@ -5,7 +5,7 @@ import play.Project._
 object ApplicationBuild extends Build {
 
     val appName         = "deadbolt-core"
-    val appVersion      = "2.1.1"
+    val appVersion      = "2.1.2"
 
     val appDependencies = Seq(
       javaCore,
