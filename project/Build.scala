@@ -1,19 +1,20 @@
 import sbt._
 import Keys._
-import play.Project._
+import play.Play.autoImport._
+import PlayKeys._
 
 object ApplicationBuild extends Build {
 
     val appName         = "deadbolt-core"
-    val appVersion      = "2.2.1-RC1"
+    val appVersion      = "2.3.0-RC1"
 
     val appDependencies = Seq(
-      javaCore,
-
       "org.mockito" % "mockito-all" % "1.9.5" % "test"
     )
 
-    val main = play.Project(appName, appVersion, appDependencies).settings(
-      organization := "be.objectify"
+    val main = Project(appName, file(".")).enablePlugins(play.PlayJava).settings(
+      organization := "be.objectify",
+      version := appVersion,
+      libraryDependencies ++= appDependencies
     )
 }
