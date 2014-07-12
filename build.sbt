@@ -1,10 +1,12 @@
-name := """deadbolt-core"""
+name := "deadbolt-core"
 
-version := "2.3.0-RC1"
+version := "2.3.1"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 scalaVersion := "2.11.1"
+
+crossScalaVersions := Seq("2.11.1", "2.10.4")
 
 organization := "be.objectify"
 
