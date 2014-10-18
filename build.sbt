@@ -26,7 +26,7 @@ publishTo := {
 
 homepage := Some(url("http://deadbolt.ws"))
 
-licenses := Seq("BSD-style" -> url("http://opensource.org/licenses/Apache-2.0"))
+licenses := Seq("Apache 2" -> url("http://opensource.org/licenses/Apache-2.0"))
 
 publishArtifact in Test := false
 
