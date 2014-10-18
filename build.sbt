@@ -34,7 +34,7 @@ pomIncludeRepository := { _ => false }
 
 pomExtra := (
     <scm>
-      <url>git@github.com:jsuereth/scala-arm.git</url>
+      <url>git@github.com:schaloner/deadbolt-2-core.git</url>
       <connection>scm:git:git@github.com:schaloner/deadbolt-2-core.git</connection>
     </scm>
     <developers>
