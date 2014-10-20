@@ -2,7 +2,6 @@ language: scala
 scala:
   - 2.11.1
 script:
-  - "cd $TRAVIS_BUILD_DIR/code"
   - "sbt ++$TRAVIS_SCALA_VERSION test"
   - "sbt ++$TRAVIS_SCALA_VERSION publish-local"
 notifications:
