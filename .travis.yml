@@ -1,5 +1,8 @@
 language: scala
+jdk:
+  - oraclejdk6
 scala:
+  - 2.10.4
   - 2.11.1
 script:
   - sbt ++$TRAVIS_SCALA_VERSION test
@@ -11,4 +14,4 @@ env:
   - secure: OC+HZZpdlvPULok40Dr9wE1mVlBkjLrCA0BjEpZGrrmO0s9WGVNQVU4lVyB21buwysx8ZKp3O9+BhAY0dndyLjdzoKL92Un0UJV326yXnjS1E5Swdq2KZsscwgJk0l4VqDZkkGlx69wPg/Aj+TDLRZf7+zgSsMZajmMnI66jTRw=
   - secure: PT2VwGuN+C+cGE/jfV6JLx94+1rdufS07mroU5d7aVFwUp+vWU/Q7O1X0YVrieoSPpAbGJFee6fCCU0vnGtie+BLpkj8h9HnwDmlPw74/4HBiLkFCF/HkTDBmMhGb+xWoCpALhOx3XUWSv2pJRshLf6jJzBYm6cldXFpKn9It3E=
 after_success:
-  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt +publishSonatype; };"
+  - "[[ $TRAVIS_BRANCH == \"master\" ]] && { sbt +publish; };"
