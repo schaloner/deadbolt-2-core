@@ -38,8 +38,8 @@ public class DeadboltAnalyzer
      * @param roleNames  the role names.  Any role name starting with ! will be negated.
      * @return true if the subject meets the restrictions (so access will be allowed), otherwise false
      */
-    public static boolean checkRole(Subject subject,
-                                    String[] roleNames)
+    public boolean checkRole(final Subject subject,
+                             final String[] roleNames)
     {
         // this is legacy code, and can be refactored out at some point
         return hasAllRoles(subject,
@@ -53,7 +53,7 @@ public class DeadboltAnalyzer
      * @param subject the subject
      * @return a non-null list containing all role names
      */
-    public static List<String> getRoleNames(Subject subject)
+    public List<String> getRoleNames(final Subject subject)
     {
         List<String> roleNames = new ArrayList<String>();
 
@@ -82,8 +82,8 @@ public class DeadboltAnalyzer
      * @param roleName the name of the role
      * @return true iff the subject has the role represented by the role name
      */
-    public static boolean hasRole(Subject subject,
-                                  String roleName)
+    public boolean hasRole(final Subject subject,
+                           final String roleName)
     {
         return getRoleNames(subject).contains(roleName);
     }
@@ -96,8 +96,8 @@ public class DeadboltAnalyzer
      * @param roleNames the names of the required roles
      * @return true iff the subject has all the roles
      */
-    public static boolean hasAllRoles(Subject subject,
-                                      String[] roleNames)
+    public boolean hasAllRoles(final Subject subject,
+                               final String[] roleNames)
     {
         List<String> heldRoles = getRoleNames(subject);
 
@@ -122,13 +122,14 @@ public class DeadboltAnalyzer
     }
 
     /**
+     * Check the pattern for a match against the {@link Permission}s of the user.
      *
-     * @param subject
-     * @param pattern
-     * @return
+     * @param subject the subject
+     * @param pattern the pattern
+     * @return true iff the pattern matches at least one of the subject's permissions
      */
-    public static boolean checkRegexPattern(Subject subject,
-                                            Pattern pattern)
+    public boolean checkRegexPattern(final Subject subject,
+                                     final Pattern pattern)
     {
         boolean roleOk = false;
         if (subject != null && pattern != null)
@@ -148,13 +149,14 @@ public class DeadboltAnalyzer
     }
 
     /**
+     * Check the pattern for equality against the {@link Permission}s of the user.
      *
-     * @param subject
-     * @param patternValue
-     * @return
+     * @param subject the subject
+     * @param patternValue the pattern value
+     * @return true iff the pattern is equal to at least one of the subject's permissions
      */
-    public static boolean checkPatternEquality(Subject subject,
-                                               String patternValue)
+    public boolean checkPatternEquality(final Subject subject,
+                                        final String patternValue)
     {
         boolean roleOk = false;
         if (subject != null && patternValue != null)

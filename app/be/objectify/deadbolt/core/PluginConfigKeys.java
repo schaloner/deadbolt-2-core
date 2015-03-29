@@ -24,10 +24,6 @@ public class PluginConfigKeys
 
     public static final String CACHE_DEADBOLT_USER = "deadbolt.java.cache-user";
 
-    public static final String BEFORE_AUTH_CHECK_TIMEOUT = "deadbolt.before-auth-check-timeout";
-
-    public static final String GET_SUBJECT_TIMEOUT = "deadbolt.get-subject-timeout";
-
     private PluginConfigKeys()
     {
         // no-op
