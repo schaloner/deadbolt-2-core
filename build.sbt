@@ -1,6 +1,6 @@
 name := "deadbolt-core"
 
-version := "2.3.3"
+version := "2.3.4-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
