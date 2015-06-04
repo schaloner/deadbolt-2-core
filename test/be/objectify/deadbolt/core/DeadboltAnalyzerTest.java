@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -36,7 +37,7 @@ public class DeadboltAnalyzerTest
     @Test
     public void testCheckRole_nullSubject()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(null,
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.empty(),
                                                             new String[]{"admin", "editor"}));
     }
 
@@ -46,7 +47,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(null);
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(subject,
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.of(subject),
                                                             new String[]{"admin", "editor"}));
     }
 
@@ -56,7 +57,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(Collections.EMPTY_LIST);
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(subject,
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.of(subject),
                                                             new String[]{"admin", "editor"}));
     }
 
@@ -68,7 +69,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertTrue(new DeadboltAnalyzer().checkRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertTrue(new DeadboltAnalyzer().checkRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                            new String[]{"admin", "editor"}));
     }
 
@@ -80,7 +81,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                             new String[]{"admin", "!editor"}));
     }
 
@@ -93,7 +94,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertTrue(new DeadboltAnalyzer().checkRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertTrue(new DeadboltAnalyzer().checkRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                            new String[]{"admin", "editor"}));
     }
 
@@ -105,7 +106,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                             new String[]{"admin", "editor", "foo"}));
     }
 
@@ -118,7 +119,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                             new String[0]));
     }
 
@@ -130,14 +131,14 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().checkRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                             new String[]{"foo", "bar"}));
     }
 
     @Test
     public void testGetRoleNames_nullSubject()
     {
-        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(null);
+        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(Optional.empty());
         Assert.assertNotNull(roleNames);
         Assert.assertTrue(roleNames.isEmpty());
     }
@@ -148,7 +149,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(null);
 
-        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(subject);
+        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(Optional.of(subject));
         Assert.assertNotNull(roleNames);
         Assert.assertTrue(roleNames.isEmpty());
     }
@@ -159,7 +160,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(Collections.EMPTY_LIST);
 
-        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(subject);
+        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(Optional.of(subject));
         Assert.assertNotNull(roleNames);
         Assert.assertTrue(roleNames.isEmpty());
     }
@@ -172,8 +173,8 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(new TestSubject.Builder().roles(roles)
-                                                                                                    .build());
+        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(Optional.of(new TestSubject.Builder().roles(roles)
+                                                                                                                .build()));
         Assert.assertNotNull(roleNames);
 
         Assert.assertEquals(2,
@@ -191,8 +192,8 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(new TestSubject.Builder().roles(roles)
-                                                                                                    .build());
+        final List<String> roleNames = new DeadboltAnalyzer().getRoleNames(Optional.of(new TestSubject.Builder().roles(roles)
+                                                                                                                .build()));
         Assert.assertNotNull(roleNames);
 
         Assert.assertEquals(2,
@@ -204,7 +205,7 @@ public class DeadboltAnalyzerTest
     @Test
     public void testHasRole_nullSubject()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().hasRole(null,
+        Assert.assertFalse(new DeadboltAnalyzer().hasRole(Optional.empty(),
                                                           "admin"));
     }
 
@@ -214,7 +215,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(null);
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasRole(subject,
+        Assert.assertFalse(new DeadboltAnalyzer().hasRole(Optional.of(subject),
                                                           "admin"));
     }
 
@@ -224,7 +225,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(Collections.EMPTY_LIST);
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasRole(subject,
+        Assert.assertFalse(new DeadboltAnalyzer().hasRole(Optional.of(subject),
                                                           "admin"));
     }
 
@@ -236,7 +237,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertTrue(new DeadboltAnalyzer().hasRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertTrue(new DeadboltAnalyzer().hasRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                          "admin"));
     }
 
@@ -249,7 +250,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertTrue(new DeadboltAnalyzer().hasRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertTrue(new DeadboltAnalyzer().hasRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                          "admin"));
     }
 
@@ -261,14 +262,14 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasRole(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().hasRole(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                           "foo"));
     }
 
     @Test
     public void testHasAllRoles_nullSubject()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(null,
+        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(Optional.empty(),
                                                               new String[]{"admin", "editor"}));
     }
 
@@ -278,7 +279,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(null);
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(subject,
+        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(Optional.of(subject),
                                                               new String[]{"admin", "editor"}));
     }
 
@@ -288,7 +289,7 @@ public class DeadboltAnalyzerTest
         final Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getRoles()).thenReturn(Collections.EMPTY_LIST);
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(subject,
+        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(Optional.of(subject),
                                                               new String[]{"admin", "editor"}));
     }
 
@@ -300,7 +301,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertTrue(new DeadboltAnalyzer().hasAllRoles(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertTrue(new DeadboltAnalyzer().hasAllRoles(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                              new String[]{"admin", "editor"}));
     }
 
@@ -313,7 +314,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertTrue(new DeadboltAnalyzer().hasAllRoles(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertTrue(new DeadboltAnalyzer().hasAllRoles(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                              new String[]{"admin", "editor"}));
     }
 
@@ -325,7 +326,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                               new String[]{"admin", "editor", "foo"}));
     }
 
@@ -338,7 +339,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                               new String[0]));
     }
 
@@ -350,7 +351,7 @@ public class DeadboltAnalyzerTest
         roles.add(new TestRole("editor"));
 
 
-        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(new TestSubject.Builder().roles(roles).build(),
+        Assert.assertFalse(new DeadboltAnalyzer().hasAllRoles(Optional.of(new TestSubject.Builder().roles(roles).build()),
                                                               new String[]{"foo", "bar"}));
     }
 
@@ -358,16 +359,16 @@ public class DeadboltAnalyzerTest
     public void testCheckRegexPattern_nullSubject()
     {
         Pattern pattern = Pattern.compile(".*");
-        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(null,
-                                                                    pattern));
+        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(Optional.empty(),
+                                                                    Optional.of(pattern)));
     }
 
     @Test
     public void testCheckRegexPattern_nullPattern()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
-                                                                                             .build(),
-                                                                    null));
+        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(Optional.of(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
+                                                                                                         .build()),
+                                                                    Optional.empty()));
     }
 
     @Test
@@ -377,8 +378,8 @@ public class DeadboltAnalyzerTest
         Mockito.when(subject.getPermissions()).thenReturn(null);
 
         Pattern pattern = Pattern.compile(".*");
-        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(subject,
-                                                                    pattern));
+        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(Optional.of(subject),
+                                                                    Optional.of(pattern)));
     }
 
     @Test
@@ -388,41 +389,41 @@ public class DeadboltAnalyzerTest
         Mockito.when(subject.getPermissions()).thenReturn(Collections.EMPTY_LIST);
 
         Pattern pattern = Pattern.compile(".*");
-        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(subject,
-                                                                    pattern));
+        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(Optional.of(subject),
+                                                                    Optional.of(pattern)));
     }
 
     @Test
     public void testCheckRegexPattern_noMatch()
     {
         Pattern pattern = Pattern.compile(".*(.view)");
-        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
-                                                                                             .build(),
-                                                                    pattern));
+        Assert.assertFalse(new DeadboltAnalyzer().checkRegexPattern(Optional.of(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
+                                                                                             .build()),
+                                                                    Optional.of(pattern)));
     }
 
     @Test
     public void testCheckRegexPattern_match()
     {
         Pattern pattern = Pattern.compile(".*(.edit)");
-        Assert.assertTrue(new DeadboltAnalyzer().checkRegexPattern(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
-                                                                                            .build(),
-                                                                   pattern));
+        Assert.assertTrue(new DeadboltAnalyzer().checkRegexPattern(Optional.of(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
+                                                                                            .build()),
+                                                                   Optional.of(pattern)));
     }
 
     @Test
     public void testCheckPatternEquality_nullSubject()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(null,
-                                                                       "foo"));
+        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(Optional.empty(),
+                                                                       Optional.of("foo")));
     }
 
     @Test
     public void testCheckPatternEquality_nullPattern()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
-                                                                                                .build(),
-                                                                       null));
+        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(Optional.of(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
+                                                                                                .build()),
+                                                                       Optional.empty()));
     }
 
     @Test
@@ -431,8 +432,8 @@ public class DeadboltAnalyzerTest
         Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getPermissions()).thenReturn(null);
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(subject,
-                                                                       "foo"));
+        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(Optional.of(subject),
+                                                                       Optional.of("foo")));
     }
 
     @Test
@@ -441,24 +442,24 @@ public class DeadboltAnalyzerTest
         Subject subject = Mockito.mock(Subject.class);
         Mockito.when(subject.getPermissions()).thenReturn(Collections.EMPTY_LIST);
 
-        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(subject,
-                                                                       "foo"));
+        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(Optional.of(subject),
+                                                                       Optional.of("foo")));
     }
 
     @Test
     public void testCheckPatternEquality_noMatch()
     {
-        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
-                                                                                                .build(),
-                                                                       "printers.view"));
+        Assert.assertFalse(new DeadboltAnalyzer().checkPatternEquality(Optional.of(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
+                                                                                                .build()),
+                                                                       Optional.of("printers.view")));
     }
 
     @Test
     public void testCheckPatternEquality_match()
     {
-        Assert.assertTrue(new DeadboltAnalyzer().checkPatternEquality(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
-                                                                                               .build(),
-                                                                      "printers.edit"));
+        Assert.assertTrue(new DeadboltAnalyzer().checkPatternEquality(Optional.of(new TestSubject.Builder().permissions(Arrays.asList(new TestPermission("printers.edit")))
+                                                                                               .build()),
+                                                                      Optional.of("printers.edit")));
     }
 
     private static class TestSubject implements Subject

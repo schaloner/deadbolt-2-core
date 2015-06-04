@@ -35,7 +35,7 @@ public class TemplateUtils
      * @param args the arguments
      * @return the arguments as an array
      */
-    public static String[] as(String... args)
+    public static String[] as(final String... args)
     {
         return args == null ? new String[0] : args;
     }
@@ -46,9 +46,9 @@ public class TemplateUtils
      * @param roles the roles
      * @return the roles as an array of strings
      */
-    public static String[] roles(Role... roles)
+    public static String[] roles(final Role... roles)
     {
-        List<String> names = new ArrayList<String>(roles.length);
+        final List<String> names = new ArrayList<String>(roles.length);
         for (Role role : roles)
         {
             names.add(role.getName());
@@ -62,9 +62,9 @@ public class TemplateUtils
      * @param permissions the permissions
      * @return the permissions as an array of strings
      */
-    public static String[] roles(Permission... permissions)
+    public static String[] roles(final Permission... permissions)
     {
-        List<String> values = new ArrayList<String>(permissions.length);
+        final List<String> values = new ArrayList<String>(permissions.length);
         for (Permission permission : permissions)
         {
             values.add(permission.getValue());
@@ -78,7 +78,7 @@ public class TemplateUtils
      * @param args the arguments
      * @return a non-null list containing the arguments
      */
-    public static List<String[]> la(String[]... args)
+    public static List<String[]> la(final String[]... args)
     {
         return Arrays.asList(args);
     }

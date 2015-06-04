@@ -22,6 +22,7 @@ import be.objectify.deadbolt.core.models.Subject;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -34,15 +35,15 @@ public class DeadboltAnalyzer
     /**
      * Checks if the subject has all the role names.  In other words, this gives AND support.
      *
-     * @param subject the subject
+     * @param subjectOption an option for the subject
      * @param roleNames  the role names.  Any role name starting with ! will be negated.
      * @return true if the subject meets the restrictions (so access will be allowed), otherwise false
      */
-    public boolean checkRole(final Subject subject,
+    public boolean checkRole(final Optional<Subject> subjectOption,
                              final String[] roleNames)
     {
         // this is legacy code, and can be refactored out at some point
-        return hasAllRoles(subject,
+        return hasAllRoles(subjectOption,
                            roleNames);
     }
 
@@ -50,16 +51,14 @@ public class DeadboltAnalyzer
     /**
      * Gets the role name of each role held.
      *
-     * @param subject the subject
+     * @param subjectOption an option for the subject
      * @return a non-null list containing all role names
      */
-    public List<String> getRoleNames(final Subject subject)
+    public List<String> getRoleNames(final Optional<Subject> subjectOption)
     {
-        List<String> roleNames = new ArrayList<String>();
-
-        if (subject != null)
-        {
-            List<? extends Role> roles = subject.getRoles();
+        final List<String> roleNames = new ArrayList<String>();
+        subjectOption.ifPresent(subject -> {
+            final List<? extends Role> roles = subject.getRoles();
             if (roles != null)
             {
                 for (Role role : roles)
@@ -70,7 +69,7 @@ public class DeadboltAnalyzer
                     }
                 }
             }
-        }
+        });
 
         return roleNames;
     }
@@ -78,28 +77,28 @@ public class DeadboltAnalyzer
     /**
      * Check if the subject has the given role.
      *
-     * @param subject the subject
+     * @param subjectOption an option for the subject
      * @param roleName the name of the role
      * @return true iff the subject has the role represented by the role name
      */
-    public boolean hasRole(final Subject subject,
+    public boolean hasRole(final Optional<Subject> subjectOption,
                            final String roleName)
     {
-        return getRoleNames(subject).contains(roleName);
+        return getRoleNames(subjectOption).contains(roleName);
     }
 
     /**
      * Check if the {@link Subject} has all the roles given in the roleNames array.  Note that while a Subject must
      * have all the roles, it may also have other roles.
      *
-     * @param subject the subject
+     * @param subjectOption an option for the subject
      * @param roleNames the names of the required roles
      * @return true iff the subject has all the roles
      */
-    public boolean hasAllRoles(final Subject subject,
+    public boolean hasAllRoles(final Optional<Subject> subjectOption,
                                final String[] roleNames)
     {
-        List<String> heldRoles = getRoleNames(subject);
+        final List<String> heldRoles = getRoleNames(subjectOption);
 
         boolean roleCheckResult = roleNames != null && roleNames.length > 0;
         for (int i = 0; roleCheckResult && i < roleNames.length; i++)
@@ -124,54 +123,52 @@ public class DeadboltAnalyzer
     /**
      * Check the pattern for a match against the {@link Permission}s of the user.
      *
-     * @param subject the subject
-     * @param pattern the pattern
+     * @param subjectOption an option for the subject
+     * @param patternOption an option for the pattern
      * @return true iff the pattern matches at least one of the subject's permissions
      */
-    public boolean checkRegexPattern(final Subject subject,
-                                     final Pattern pattern)
+    public boolean checkRegexPattern(final Optional<Subject> subjectOption,
+                                     final Optional<Pattern> patternOption)
     {
-        boolean roleOk = false;
-        if (subject != null && pattern != null)
-        {
-            List<? extends Permission> permissions = subject.getPermissions();
+        final boolean[] roleOk = {false};
+        subjectOption.ifPresent(subject -> patternOption.ifPresent(pattern -> {
+            final List<? extends Permission> permissions = subject.getPermissions();
             if (permissions != null)
             {
-                for (Iterator<? extends Permission> iterator = permissions.iterator(); !roleOk && iterator.hasNext(); )
+                for (Iterator<? extends Permission> iterator = permissions.iterator(); !roleOk[0] && iterator.hasNext(); )
                 {
-                    Permission permission = iterator.next();
-                    roleOk = pattern.matcher(permission.getValue()).matches();
+                    final Permission permission = iterator.next();
+                    roleOk[0] = pattern.matcher(permission.getValue()).matches();
                 }
             }
-        }
+        }));
 
-        return roleOk;
+        return roleOk[0];
     }
 
     /**
      * Check the pattern for equality against the {@link Permission}s of the user.
      *
-     * @param subject the subject
-     * @param patternValue the pattern value
+     * @param subjectOption an option for the subject
+     * @param patternValueOption an option for the pattern value
      * @return true iff the pattern is equal to at least one of the subject's permissions
      */
-    public boolean checkPatternEquality(final Subject subject,
-                                        final String patternValue)
+    public boolean checkPatternEquality(final Optional<Subject> subjectOption,
+                                        final Optional<String> patternValueOption)
     {
-        boolean roleOk = false;
-        if (subject != null && patternValue != null)
-        {
-            List<? extends Permission> permissions = subject.getPermissions();
+        final boolean[] roleOk = {false};
+        subjectOption.ifPresent(subject -> patternValueOption.ifPresent(patternValue -> {
+            final List<? extends Permission> permissions = subject.getPermissions();
             if (permissions != null)
             {
-                for (Iterator<? extends Permission> iterator = permissions.iterator(); !roleOk && iterator.hasNext(); )
+                for (Iterator<? extends Permission> iterator = permissions.iterator(); !roleOk[0] && iterator.hasNext(); )
                 {
-                    Permission permission = iterator.next();
-                    roleOk = patternValue.equals(permission.getValue());
+                    final Permission permission = iterator.next();
+                    roleOk[0] = patternValue.equals(permission.getValue());
                 }
             }
-        }
+        }));
 
-        return roleOk;
+        return roleOk[0];
     }
 }
