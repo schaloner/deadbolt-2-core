@@ -8,6 +8,7 @@ script:
   - sbt ++$TRAVIS_SCALA_VERSION +publish-local
 notifications:
   email: false
+sudo: false
 env:
   global:
   - secure: OC+HZZpdlvPULok40Dr9wE1mVlBkjLrCA0BjEpZGrrmO0s9WGVNQVU4lVyB21buwysx8ZKp3O9+BhAY0dndyLjdzoKL92Un0UJV326yXnjS1E5Swdq2KZsscwgJk0l4VqDZkkGlx69wPg/Aj+TDLRZf7+zgSsMZajmMnI66jTRw=
