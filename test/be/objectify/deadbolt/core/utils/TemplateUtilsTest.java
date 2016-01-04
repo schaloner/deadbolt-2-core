@@ -24,6 +24,58 @@ import org.junit.Test;
 public class TemplateUtilsTest
 {
     @Test
+    public void testAllOf_noInput()
+    {
+        final String[] array = TemplateUtils.allOf();
+        Assert.assertNotNull(array);
+        Assert.assertEquals(0,
+                            array.length);
+    }
+
+    @Test
+    public void testAllOf_singleValueInput()
+    {
+        final String[] array = TemplateUtils.allOf("foo");
+        Assert.assertNotNull(array);
+        Assert.assertEquals(1,
+                            array.length);
+        Assert.assertEquals("foo",
+                            array[0]);
+    }
+
+    @Test
+    public void testAllOf_multipleValueInput()
+    {
+        final String[] array = TemplateUtils.allOf("foo", "bar");
+        Assert.assertNotNull(array);
+        Assert.assertEquals(2,
+                            array.length);
+        Assert.assertEquals("foo",
+                            array[0]);
+        Assert.assertEquals("bar",
+                            array[1]);
+    }
+
+    @Test
+    public void testAllOf_nullArrayInput()
+    {
+        final String[] array = TemplateUtils.allOf((String[])null);
+        Assert.assertNotNull(array);
+        Assert.assertEquals(0,
+                            array.length);
+    }
+
+    @Test
+    public void testAllOf_nullStringInput()
+    {
+        final String[] array = TemplateUtils.allOf((String)null);
+        Assert.assertNotNull(array);
+        Assert.assertEquals(1,
+                            array.length);
+        Assert.assertNull(array[0]);
+    }
+
+    @Test
     public void testAs_noInput()
     {
         final String[] array = TemplateUtils.as();

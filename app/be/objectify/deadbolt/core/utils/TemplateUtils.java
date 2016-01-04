@@ -30,17 +30,6 @@ import java.util.List;
 public class TemplateUtils
 {
     /**
-     * Converts the arguments into a String array.
-     *
-     * @param args the arguments
-     * @return the arguments as an array
-     */
-    public static String[] as(final String... args)
-    {
-        return args == null ? new String[0] : args;
-    }
-
-    /**
      * Converts the roles into a String array.
      *
      * @param roles the roles
@@ -73,13 +62,49 @@ public class TemplateUtils
     }
 
     /**
+     * Converts the arguments into a String array.
+     *
+     * @param args the arguments
+     * @return the arguments as an array
+     */
+    public static String[] allOf(final String... args)
+    {
+        return args == null ? new String[0] : args;
+    }
+
+    /**
+     * Converts the arguments into a String array.
+     *
+     * @param args the arguments
+     * @return the arguments as an array
+     * @deprecated  use {@link TemplateUtils#allOf} instead
+     */
+    @Deprecated
+    public static String[] as(final String... args)
+    {
+        return allOf(args);
+    }
+
+    /**
      * Converts the argument array into a List of String arrays.
      *
      * @param args the arguments
      * @return a non-null list containing the arguments
      */
-    public static List<String[]> la(final String[]... args)
+    public static List<String[]> anyOf(final String[]... args)
     {
         return Arrays.asList(args);
+    }
+
+    /**
+     * Converts the argument array into a List of String arrays.
+     *
+     * @param args the arguments
+     * @return a non-null list containing the arguments
+     * @deprecated  use {@link TemplateUtils#anyOf} instead
+     */
+    public static List<String[]> la(final String[]... args)
+    {
+        return anyOf(args);
     }
 }
