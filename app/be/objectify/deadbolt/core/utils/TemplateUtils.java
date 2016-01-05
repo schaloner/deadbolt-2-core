@@ -103,6 +103,7 @@ public class TemplateUtils
      * @return a non-null list containing the arguments
      * @deprecated  use {@link TemplateUtils#anyOf} instead
      */
+    @Deprecated
     public static List<String[]> la(final String[]... args)
     {
         return anyOf(args);
